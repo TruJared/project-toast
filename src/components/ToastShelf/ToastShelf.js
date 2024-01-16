@@ -1,30 +1,39 @@
 import React, { useEffect, useState } from "react";
 
+import { ToastContext } from "../ToastProvider/index";
+
 import Toast from "../Toast";
 import styles from "./ToastShelf.module.css";
 
 function ToastShelf({ message, variant, show, setShowToast, setMessage, setSelectedVariant, variants }) {
-    const [toasts, setToasts] = useState([]);
+    const { toasts, setToasts, closeToast } = React.useContext(ToastContext);
 
-    useEffect(() => {
-        if (show && message) {
-            const newToast = {
-                message,
-                variant,
-                show,
-                id: Date.now(), // Add a unique id to each toast
-            };
-            setToasts((prevToasts) => [...prevToasts, newToast]);
-            // reset message, variant, and show
-            setMessage("");
-            setSelectedVariant(variants[0]);
-            setShowToast(false);
-        }
-    }, [show, message, variant, toasts, setMessage, setSelectedVariant, variants, setShowToast]);
 
-    const closeToast = (id) => {
-        setToasts(toasts.filter(toast => toast.id !== id));
-    };
+    	useEffect(() => {
+		if (show && message) {
+			const newToast = {
+				message,
+				variant,
+				show,
+				id: Date.now(), // Add a unique id to each toast
+			};
+			setToasts((prevToasts) => [...prevToasts, newToast]);
+			// reset message, variant, and show
+			setMessage("");
+			setSelectedVariant(variants[0]);
+			setShowToast(false);
+		}
+	}, [
+		show,
+		message,
+		variant,
+		toasts,
+		setMessage,
+		setSelectedVariant,
+		variants,
+		setShowToast,
+	]);
+
 
     return (
         <ol className={styles.wrapper}>
