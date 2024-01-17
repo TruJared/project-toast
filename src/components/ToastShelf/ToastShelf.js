@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { ToastContext } from "../ToastProvider/index";
+import useEscapeKey from "../../hooks/useEscapeKey";
 
 import Toast from "../Toast";
 import styles from "./ToastShelf.module.css";
@@ -41,23 +42,16 @@ function ToastShelf({
 		setShowToast,
 	]);
 
-	useEffect(() => {
-		toasts.forEach((toast) => {
-			addEventListener("keydown", (e) => {
-				if (e.key === "Escape") {
-					closeToast(toast.id);
-				}
-			});
 
-			return () => {
-				removeEventListener("keydown", (e) => {
-					if (e.key === "Escape") {
-						closeToast(toast.id);
-					}
-				});
-			};
+	useEscapeKey(() => {
+		console.log('useEscapeKey');
+
+		toasts.forEach((toast) => {
+			closeToast(toast.id);
 		});
-	}, [toasts]);
+	});
+
+
 
 	return (
 		<ol className={styles.wrapper}>
